@@ -2,96 +2,168 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #fafaf7;
-  border-right: 1px solid #e3e3df;
+  background: transparent;
   overflow: hidden;
+  min-height: 0;
 }
 
-.list-header {
-  padding: 1rem 1rem 0.75rem;
-  border-bottom: 1px solid #e3e3df;
-  background: #fff;
+.filters {
+  padding: 0 1.5rem 0.55rem;
+  border-bottom: var(--hair) solid var(--rule-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
 
-  h2 {
-    margin: 0 0 0.25rem;
-    font-size: 1.1rem;
-    color: #234f1e;
+.counts {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin-top: 0.2rem;
+
+  .big {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.45rem;
+    line-height: 1;
+    color: var(--ink);
+    font-feature-settings: 'kern', 'lnum';
   }
 
-  .meta {
-    margin: 0 0 0.6rem;
-    font-size: 0.8rem;
-    color: #6a6a63;
-  }
-
-  .search,
-  .country-select {
-    width: 100%;
-    padding: 0.5rem 0.7rem;
-    border: 1px solid #cfcfc8;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    background: #fff;
-
-    &:focus {
-      outline: none;
-      border-color: #4a8f3e;
-      box-shadow: 0 0 0 3px rgba(74, 143, 62, 0.15);
-    }
-  }
-
-  .country-select {
-    margin-top: 0.4rem;
+  .of {
+    color: var(--ink-faint);
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
   }
 
   .loading {
-    color: #4a8f3e;
+    color: var(--accent);
     font-style: italic;
+    font-size: 0.68rem;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  .lbl {
+    color: var(--ink-faint);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+  }
+
+  input, select {
+    width: 100%;
+    border: 0;
+    border-bottom: var(--hair) solid var(--rule);
+    background: transparent;
+    padding: 0.25rem 0;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    transition: border-color var(--t-fast) var(--ease-paper);
+  }
+
+  input::placeholder {
+    color: var(--ink-faint);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  input:focus, select:focus {
+    border-bottom-color: var(--accent);
+  }
+
+  select {
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--ink-faint) 50%),
+      linear-gradient(-45deg, transparent 50%, var(--ink-faint) 50%);
+    background-position:
+      calc(100% - 10px) 55%,
+      calc(100% - 5px) 55%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 1.2rem;
   }
 }
 
 .course-list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.2rem 0 0.6rem;
   overflow-y: auto;
   flex: 1;
 }
 
 .course-item {
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid #ececea;
+  padding: 0.65rem 1.5rem 0.55rem;
+  border-bottom: var(--hair) solid var(--rule-soft);
   cursor: pointer;
-  transition: background 0.12s ease;
+  transition: background-color var(--t-fast) var(--ease-paper);
 
   &:hover {
-    background: #f0eee7;
+    background: color-mix(in oklab, var(--bg-tint) 70%, transparent);
   }
 
   &.selected {
-    background: #e6f0e1;
-    border-left: 3px solid #4a8f3e;
-    padding-left: calc(1rem - 3px);
+    background: var(--selection-bg);
+
+    .name {
+      font-style: italic;
+    }
+  }
+
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
   }
 
   .name {
-    font-weight: 500;
-    color: #1f2a1c;
-    font-size: 0.95rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.98rem;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: 0.005em;
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
   }
 
-  .sub {
-    margin-top: 0.2rem;
-    font-size: 0.8rem;
-    color: #6a6a63;
-    display: flex;
-    gap: 0.6rem;
+  .iso {
+    color: var(--ink-faint);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .meta {
+    margin-top: 0.18rem;
+    color: var(--ink-faint);
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+
+    .sep {
+      margin: 0 0.4em;
+      color: var(--rule);
+    }
   }
 }
 
 .empty {
-  padding: 2rem 1rem;
-  text-align: center;
-  color: #888;
+  list-style: none;
+  padding: 2rem 1.5rem;
+  color: var(--ink-faint);
+  font-style: italic;
   font-size: 0.9rem;
 }

@@ -1,0 +1,87 @@
+@let k = card();
+@let t = totals();
+@if (k && t) {
+  <header class="head">
+    <h4>Scorecard</h4>
+    <p class="cap mono">saved · in this browser</p>
+  </header>
+
+  <div class="players">
+    @for (p of k.players; track $index; let i = $index) {
+      <label class="player-name">
+        <input
+          type="text"
+          [ngModel]="p.name"
+          (ngModelChange)="renamePlayer(i, $event)"
+          maxlength="24"
+          aria-label="Player name"
+        />
+        @if (k.players.length > 1) {
+          <button class="rm" type="button" (click)="removePlayer(i)" aria-label="Remove player">−</button>
+        }
+      </label>
+    }
+    @if (k.players.length < 6) {
+      <button class="add" type="button" (click)="addPlayer()">＋ player</button>
+    }
+  </div>
+
+  <table class="card-table">
+    <thead>
+      <tr>
+        <th class="h-hole mono">hole</th>
+        <th class="h-par mono">par</th>
+        @for (p of k.players; track $index) {
+          <th class="h-player">{{ p.name }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (par of k.pars; track $index; let i = $index) {
+        <tr>
+          <td class="c-hole mono">{{ i + 1 }}</td>
+          <td class="c-par">
+            <input
+              class="num"
+              type="number"
+              min="2"
+              max="7"
+              [ngModel]="par"
+              (ngModelChange)="setPar(i, $event)"
+              [attr.aria-label]="'Par for hole ' + (i + 1)"
+            />
+          </td>
+          @for (p of k.players; track $index; let pi = $index) {
+            <td class="c-score">
+              <input
+                class="num"
+                type="number"
+                min="1"
+                max="15"
+                [ngModel]="p.scores[i]"
+                (ngModelChange)="setScore(pi, i, $event)"
+                [attr.aria-label]="'Score for ' + p.name + ' on hole ' + (i + 1)"
+              />
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+    <tfoot>
+      <tr>
+        <td class="mono">tot</td>
+        <td class="t-par">{{ t.totalPar }}</td>
+        @for (p of k.players; track $index; let pi = $index) {
+          <td class="t-player">
+            <span class="t-num">{{ t.playerTotals[pi] || '—' }}</span>
+            @if (t.playerThru[pi] > 0) {
+              <em class="t-vs mono">{{ formatVsPar(t.playerVsPar[pi]) }} · thru {{ t.playerThru[pi] }}</em>
+            }
+          </td>
+        }
+      </tr>
+    </tfoot>
+  </table>
+
+  <button class="reset" type="button" (click)="reset()">reset scorecard</button>
+}

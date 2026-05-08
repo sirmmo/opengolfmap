@@ -1,68 +1,102 @@
-@let course = courseService.selected();
-@if (course) {
-  <article class="card">
-    <header>
-      <h3>{{ course.properties.name || 'Unnamed course' }}</h3>
-      <button type="button" class="close" (click)="close()" aria-label="Close">×</button>
-    </header>
+@let c = course();
+@if (c) {
+  <article class="note">
+    <div class="paper">
+      <header class="head">
+        <div class="title">
+          <h3>{{ c.properties.name || 'unnamed course' }}</h3>
+          <p class="line mono">
+            {{ c.properties.iso_country }}
+            <span class="sep">·</span>
+            {{ c.properties.country_name }}
+            @if (c.properties.addr_city) {
+              <span class="sep">·</span>{{ c.properties.addr_city }}
+            }
+          </p>
+        </div>
+        <button type="button" class="close" (click)="close()" aria-label="Close">×</button>
+      </header>
 
-    <p class="country-line">
-      {{ course.properties.country_name }}
-      @if (course.properties.addr_city) {
-        · {{ course.properties.addr_city }}
-      }
-    </p>
+      <nav class="tabs" role="tablist">
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          [class.active]="tab() === 'course'"
+          [attr.aria-selected]="tab() === 'course'"
+          (click)="setTab('course')"
+        >
+          Course
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          [class.active]="tab() === 'scorecard'"
+          [attr.aria-selected]="tab() === 'scorecard'"
+          (click)="setTab('scorecard')"
+        >
+          Scorecard
+        </button>
+      </nav>
 
-    <dl class="props">
-      @if (course.properties.addr_street || course.properties.addr_postcode) {
-        <div>
-          <dt>Address</dt>
-          <dd>
-            @if (course.properties.addr_street) { {{ course.properties.addr_street }} }
-            @if (course.properties.addr_postcode) { · {{ course.properties.addr_postcode }} }
-          </dd>
-        </div>
-      }
-      @if (course.properties.holes) {
-        <div><dt>Holes</dt><dd>{{ course.properties.holes }}</dd></div>
-      }
-      @if (course.properties.par) {
-        <div><dt>Par</dt><dd>{{ course.properties.par }}</dd></div>
-      }
-      @if (course.properties.operator) {
-        <div><dt>Operator</dt><dd>{{ course.properties.operator }}</dd></div>
-      }
-      @if (course.properties.access) {
-        <div><dt>Access</dt><dd>{{ course.properties.access }}</dd></div>
-      }
-      @if (course.properties.phone) {
-        <div>
-          <dt>Phone</dt>
-          <dd><a [href]="'tel:' + course.properties.phone">{{ course.properties.phone }}</a></dd>
-        </div>
-      }
-      @if (course.properties.email) {
-        <div>
-          <dt>Email</dt>
-          <dd><a [href]="'mailto:' + course.properties.email">{{ course.properties.email }}</a></dd>
-        </div>
-      }
-      @if (course.properties.website) {
-        <div>
-          <dt>Website</dt>
-          <dd>
-            <a [href]="course.properties.website" target="_blank" rel="noopener">
-              {{ course.properties.website }}
+      <div class="body">
+        @if (tab() === 'course') {
+          <dl class="props">
+            @if (c.properties.addr_street || c.properties.addr_postcode) {
+              <div>
+                <dt class="mono">addr</dt>
+                <dd>
+                  @if (c.properties.addr_street) { {{ c.properties.addr_street }} }
+                  @if (c.properties.addr_postcode) { · {{ c.properties.addr_postcode }} }
+                </dd>
+              </div>
+            }
+            @if (c.properties.holes) {
+              <div><dt class="mono">holes</dt><dd>{{ c.properties.holes }}</dd></div>
+            }
+            @if (c.properties.par) {
+              <div><dt class="mono">par</dt><dd>{{ c.properties.par }}</dd></div>
+            }
+            @if (c.properties.operator) {
+              <div><dt class="mono">operator</dt><dd>{{ c.properties.operator }}</dd></div>
+            }
+            @if (c.properties.access) {
+              <div><dt class="mono">access</dt><dd><em>{{ c.properties.access }}</em></dd></div>
+            }
+            @if (c.properties.phone) {
+              <div>
+                <dt class="mono">phone</dt>
+                <dd><a [href]="'tel:' + c.properties.phone">{{ c.properties.phone }}</a></dd>
+              </div>
+            }
+            @if (c.properties.email) {
+              <div>
+                <dt class="mono">email</dt>
+                <dd><a [href]="'mailto:' + c.properties.email">{{ c.properties.email }}</a></dd>
+              </div>
+            }
+            @if (c.properties.website) {
+              <div>
+                <dt class="mono">site</dt>
+                <dd>
+                  <a [href]="c.properties.website" target="_blank" rel="noopener">
+                    {{ c.properties.website }}
+                  </a>
+                </dd>
+              </div>
+            }
+          </dl>
+
+          <p class="footnote mono">
+            <a [href]="osmUrl(c)" target="_blank" rel="noopener">
+              {{ c.properties.osm_type }}/{{ c.properties.osm_id }} ↗
             </a>
-          </dd>
-        </div>
-      }
-    </dl>
-
-    <footer>
-      <a [href]="osmUrl(course)" target="_blank" rel="noopener" class="osm-link">
-        View on OpenStreetMap →
-      </a>
-    </footer>
+          </p>
+        } @else {
+          <app-scorecard></app-scorecard>
+        }
+      </div>
+    </div>
   </article>
 }

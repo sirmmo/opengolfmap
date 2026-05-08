@@ -4,34 +4,40 @@
 @let loadingCountry = courseService.loadingCountry();
 @let countries = availableCountries();
 
-<header class="list-header">
-  <h2>Golf courses</h2>
-  <p class="meta">
-    {{ courses.length | number }} of {{ total | number }}
+<header class="filters">
+  <div class="counts">
+    <span class="big">{{ courses.length | number }}</span>
+    <span class="of mono">of {{ total | number }} courses</span>
     @if (loadingCountry) {
-      <span class="loading">· loading {{ loadingCountry }}…</span>
+      <span class="loading mono">· loading {{ loadingCountry }}…</span>
     }
-  </p>
-  <input
-    type="search"
-    class="search"
-    placeholder="Search by name, city, country…"
-    [ngModel]="courseService.query()"
-    (ngModelChange)="onQueryInput($event)"
-    aria-label="Search courses"
-  />
+  </div>
+
+  <label class="field">
+    <span class="lbl mono">search</span>
+    <input
+      type="search"
+      [ngModel]="courseService.query()"
+      (ngModelChange)="onQueryInput($event)"
+      placeholder="name, city, country…"
+      aria-label="Search courses"
+    />
+  </label>
+
   @if (countries.length > 0) {
-    <select
-      class="country-select"
-      [ngModel]="courseService.countryFilter() ?? ''"
-      (ngModelChange)="onCountryChange($event)"
-      aria-label="Filter by country"
-    >
-      <option value="">All countries ({{ countries.length }})</option>
-      @for (c of countries; track c.iso) {
-        <option [value]="c.iso">{{ c.name }} ({{ c.course_count | number }})</option>
-      }
-    </select>
+    <label class="field">
+      <span class="lbl mono">country</span>
+      <select
+        [ngModel]="courseService.countryFilter() ?? ''"
+        (ngModelChange)="onCountryChange($event)"
+        aria-label="Filter by country"
+      >
+        <option value="">all · {{ countries.length }}</option>
+        @for (c of countries; track c.iso) {
+          <option [value]="c.iso">{{ c.name }} · {{ c.course_count | number }}</option>
+        }
+      </select>
+    </label>
   }
 </header>
 
@@ -46,18 +52,26 @@
       (keydown.enter)="courseService.select(course.id)"
       tabindex="0"
     >
-      <div class="name">{{ course.properties.name || 'Unnamed course' }}</div>
-      <div class="sub">
-        <span class="country">{{ course.properties.country_name }}</span>
+      <div class="row">
+        <span class="name">{{ course.properties.name || 'unnamed' }}</span>
+        <span class="iso mono">{{ course.properties.iso_country }}</span>
+      </div>
+      <div class="meta mono">
         @if (course.properties.addr_city) {
-          <span class="city">· {{ course.properties.addr_city }}</span>
+          {{ course.properties.addr_city }}<span class="sep">·</span>
         }
+        {{ course.properties.country_name }}
         @if (course.properties.holes) {
-          <span class="holes">· {{ course.properties.holes }} holes</span>
+          <span class="sep">·</span>{{ course.properties.holes }}h
+        }
+        @if (course.properties.par) {
+          <span class="sep">·</span>par {{ course.properties.par }}
         }
       </div>
     </li>
   } @empty {
-    <li class="empty">No courses found.</li>
+    <li class="empty">
+      <em>No courses match.</em>
+    </li>
   }
 </ul>

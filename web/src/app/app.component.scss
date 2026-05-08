@@ -2,54 +2,108 @@
   display: block;
   height: 100vh;
   height: 100dvh;
+  background: var(--bg);
 }
 
 .shell {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: minmax(320px, 380px) 1fr;
   height: 100%;
   width: 100%;
 
   @media (max-width: 720px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 40vh 1fr;
+    grid-template-rows: 50vh 1fr;
   }
 }
 
 .sidebar {
-  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-paper);
+  border-right: var(--hair) solid var(--rule);
+  overflow: hidden;
   min-height: 0;
+}
+
+.masthead {
+  position: relative;
+  padding: 1.4rem 1.5rem 0.9rem;
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 1.9vw, 2rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .strap {
+    margin: 0.45rem 0 0.9rem;
+    font-family: var(--font-display);
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+
+    em {
+      font-style: italic;
+      font-weight: 400;
+    }
+    strong {
+      font-weight: 600;
+      color: var(--ink);
+    }
+  }
+
+  .hairline {
+    width: 28%;
+    margin: 0;
+    border-top: var(--hair) solid var(--accent);
+  }
+}
+
+app-course-list {
+  flex: 1;
+  min-height: 0;
+}
+
+.colophon {
+  padding: 0.7rem 1.5rem 1rem;
+  border-top: var(--hair) solid var(--rule-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+
+  .mono.small {
+    color: var(--ink-faint);
+    font-size: 0.66rem;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  .theme-toggle {
+    align-self: flex-start;
+    color: var(--ink-faint);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    transition: color var(--t-fast) var(--ease-paper);
+
+    .active {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    &:hover { color: var(--accent-deep); }
+  }
 }
 
 .map-pane {
   position: relative;
   height: 100%;
   min-height: 0;
-}
-
-.brand {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 4;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #e3e3df;
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  font-size: 0.85rem;
-
-  strong { color: #234f1e; letter-spacing: 0.02em; }
-  small  { color: #6a6a63; }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #4a8f3e;
-    box-shadow: 0 0 0 2px rgba(74, 143, 62, 0.25);
-  }
+  background: var(--bg-paper);
 }

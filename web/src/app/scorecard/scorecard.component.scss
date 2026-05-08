@@ -1,0 +1,181 @@
+:host {
+  display: block;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.55rem;
+
+  h4 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.005em;
+  }
+
+  .cap {
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+  }
+}
+
+.players {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.player-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-bottom: var(--hair) solid var(--rule);
+  padding: 0 0 1px;
+
+  input {
+    border: 0;
+    background: transparent;
+    padding: 0.15rem 0;
+    width: 6.5rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .rm {
+    color: var(--ink-faint);
+    font-size: 0.95rem;
+    line-height: 1;
+    padding: 0 0.15rem;
+    transition: color var(--t-fast) var(--ease-paper);
+  }
+  .rm:hover { color: var(--terracotta); }
+}
+
+.add {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  border-bottom: var(--hair) dashed var(--rule);
+  padding: 0 0 1px;
+  letter-spacing: 0.04em;
+  transition: color var(--t-fast) var(--ease-paper),
+              border-color var(--t-fast) var(--ease-paper);
+}
+.add:hover {
+  color: var(--accent-deep);
+  border-color: var(--accent);
+}
+
+.card-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.25rem 0 0.7rem;
+  font-feature-settings: 'kern', 'tnum';
+
+  th, td {
+    padding: 0.25rem 0.4rem;
+    border-bottom: var(--hair) solid var(--rule-soft);
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  thead th {
+    border-bottom-color: var(--rule);
+    color: var(--ink-soft);
+    font-weight: 500;
+    font-style: italic;
+    font-size: 0.78rem;
+  }
+
+  thead .h-hole, thead .h-par {
+    width: 2.5rem;
+    color: var(--ink-faint);
+    font-style: normal;
+    text-transform: lowercase;
+    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+  }
+
+  .c-hole {
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+    width: 2.5rem;
+  }
+
+  .c-par, .c-score {
+    width: 3rem;
+  }
+
+  tfoot td {
+    border-bottom: 0;
+    border-top: var(--hair) solid var(--rule);
+    padding-top: 0.45rem;
+    font-weight: 600;
+  }
+
+  tfoot .t-par {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  tfoot .t-num {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  tfoot .t-vs {
+    display: block;
+    font-style: normal;
+    color: var(--ink-faint);
+    font-size: 0.65rem;
+    margin-top: 0.05rem;
+  }
+}
+
+.num {
+  width: 2.4rem;
+  border: 0;
+  background: transparent;
+  border-bottom: var(--hair) solid var(--rule-soft);
+  padding: 0.15rem 0.1rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--ink);
+  text-align: center;
+  outline: none;
+  transition: border-color var(--t-fast) var(--ease-paper),
+              color var(--t-fast) var(--ease-paper);
+
+  /* Hide native spinners — they break the typeset look. */
+  appearance: textfield;
+  -moz-appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button { appearance: none; margin: 0; }
+
+  &:focus, &:hover {
+    border-bottom-color: var(--accent);
+    color: var(--accent-deep);
+  }
+}
+
+.reset {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+  transition: color var(--t-fast) var(--ease-paper);
+
+  &:hover { color: var(--terracotta); }
+}

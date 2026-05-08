@@ -1,14 +1,31 @@
 <div class="shell">
-  <aside class="sidebar">
+  <aside class="sidebar grain">
+    <header class="masthead">
+      <h1>opengolfmap</h1>
+      <p class="strap">
+        <em>a field guide to OSM golf data</em><br>
+        across <strong>Europe</strong>
+      </p>
+      <hr class="hairline">
+    </header>
     <app-course-list></app-course-list>
+    <footer class="colophon">
+      <p class="mono small">
+        © OpenStreetMap contributors · ODbL<br>
+        opengolfmap is a non-commercial study project
+      </p>
+      <button
+        type="button"
+        class="theme-toggle mono"
+        (click)="toggleTheme()"
+        aria-label="Toggle light/dark theme"
+      >
+        theme · <span [class.active]="themeService.theme() === 'light'">light</span> / <span [class.active]="themeService.theme() === 'dark'">dark</span>
+      </button>
+    </footer>
   </aside>
-  <main class="map-pane">
+  <main class="map-pane grain">
     <app-map></app-map>
     <app-course-detail></app-course-detail>
-    <div class="brand">
-      <span class="dot"></span>
-      <strong>opengolfmap</strong>
-      <small>Europe · OSM</small>
-    </div>
   </main>
 </div>
