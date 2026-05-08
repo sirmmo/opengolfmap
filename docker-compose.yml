@@ -1,0 +1,22 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /app
+    volumes:
+      - ./web:/app
+    ports:
+      - "4200:4200"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
+
+  fetch-data:
+    image: node:20-bookworm-slim
+    working_dir: /work
+    volumes:
+      - ./data:/work/data
+      - ./web/public/data:/work/output
+    command: ["node", "/work/data/fetch-courses.mjs"]
+    profiles: ["tools"]

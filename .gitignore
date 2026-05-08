@@ -1,0 +1,9 @@
+node_modules/
+web/node_modules/
+web/.angular/
+web/dist/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example

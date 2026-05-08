@@ -1,0 +1,38 @@
+name: Refresh OSM data
+
+on:
+  schedule:
+    # Mondays at 04:17 UTC — off-peak for the public Overpass instance.
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch from Overpass
+        env:
+          OUT_DIR: ${{ github.workspace }}/web/public/data
+          COUNTRY_ISO: IT
+        run: node data/fetch-courses.mjs
+
+      - name: Commit if changed
+        run: |
+          if [[ -n "$(git status --porcelain web/public/data)" ]]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add web/public/data
+            git commit -m "chore(data): weekly Overpass refresh"
+            git push
+          else
+            echo "No data changes; skipping commit."
+          fi

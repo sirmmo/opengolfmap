@@ -1,0 +1,7 @@
+.git
+.claude
+node_modules
+web/node_modules
+web/.angular
+web/dist
+data/*.geojson
