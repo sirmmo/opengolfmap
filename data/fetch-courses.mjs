@@ -1,13 +1,23 @@
-import { writeFile, mkdir } from 'node:fs/promises';
+import { writeFile, mkdir, readFile, rm } from 'node:fs/promises';
 import { dirname } from 'node:path';
 
 const ENDPOINT = process.env.OVERPASS_ENDPOINT ?? 'https://overpass-api.de/api/interpreter';
 const OUT_DIR = process.env.OUT_DIR ?? '/work/output';
-const COUNTRY_ISO = process.env.COUNTRY_ISO ?? 'IT';
+const COUNTRIES_FILE = process.env.COUNTRIES_FILE ?? '/work/data/countries.json';
+const SLEEP_MS = Number(process.env.SLEEP_MS ?? 4000);
+const COUNTRIES_OVERRIDE = process.env.COUNTRIES; // optional CSV override
+const FEATURES_DIR = `${OUT_DIR}/features`;
+const POLYGON_GOLF_VALUES = new Set([
+  'fairway', 'green', 'tee', 'bunker', 'rough', 'water_hazard',
+  'lateral_water_hazard', 'driving_range', 'clubhouse', 'out_of_bounds',
+]);
 
-const QUERY = `
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function buildQuery(iso) {
+  return `
 [out:json][timeout:600];
-area["ISO3166-1"="${COUNTRY_ISO}"][admin_level=2]->.country;
+area["ISO3166-1"="${iso}"][admin_level=2]->.country;
 (
   way["leisure"="golf_course"](area.country);
   relation["leisure"="golf_course"](area.country);
@@ -17,32 +27,34 @@ area["ISO3166-1"="${COUNTRY_ISO}"][admin_level=2]->.country;
 );
 out geom tags;
 `;
-
-console.log(`Querying Overpass for golf data in ${COUNTRY_ISO}...`);
-const t0 = Date.now();
-
-const res = await fetch(ENDPOINT, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Accept': 'application/json',
-    'User-Agent': 'opengolfmap-data-fetcher/0.2 (+https://github.com/opengolfmap)',
-  },
-  body: new URLSearchParams({ data: QUERY }),
-});
-
-if (!res.ok) {
-  const body = await res.text();
-  throw new Error(`Overpass returned ${res.status}: ${body.slice(0, 500)}`);
 }
 
-const json = await res.json();
-console.log(`Got ${json.elements?.length ?? 0} elements in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+async function callOverpass(iso, attempt = 1) {
+  const res = await fetch(ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
+      'User-Agent': 'opengolfmap-data-fetcher/0.3 (+https://github.com/sirmmo/opengolfmap)',
+    },
+    body: new URLSearchParams({ data: buildQuery(iso) }),
+  });
 
-const POLYGON_GOLF_VALUES = new Set([
-  'fairway', 'green', 'tee', 'bunker', 'rough', 'water_hazard',
-  'lateral_water_hazard', 'driving_range', 'clubhouse', 'out_of_bounds',
-]);
+  if (res.status === 429 || res.status === 504) {
+    if (attempt >= 3) throw new Error(`Overpass ${res.status} after ${attempt} attempts for ${iso}`);
+    const wait = 30_000 * attempt;
+    console.warn(`  ${iso}: HTTP ${res.status}, retrying in ${wait / 1000}s (attempt ${attempt + 1})`);
+    await sleep(wait);
+    return callOverpass(iso, attempt + 1);
+  }
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Overpass returned ${res.status} for ${iso}: ${body.slice(0, 300)}`);
+  }
+
+  return res.json();
+}
 
 function ringIsClosed(coords) {
   if (coords.length < 4) return false;
@@ -136,62 +148,135 @@ function bboxOf(geom) {
   return [minX, minY, maxX, maxY];
 }
 
-const features = (json.elements ?? []).flatMap(elementToFeatures);
-console.log(`Converted to ${features.length} GeoJSON features`);
+async function fetchCountry(iso, name) {
+  const t0 = Date.now();
+  process.stdout.write(`[${iso}] ${name}: querying...`);
+  const json = await callOverpass(iso);
+  const elements = json.elements ?? [];
+  const features = elements.flatMap(elementToFeatures);
 
-const courseFeatures = features.filter((f) => f.properties.leisure === 'golf_course');
-const courses = courseFeatures.map((f) => {
-  const c = centroidOf(f.geometry);
-  const bb = bboxOf(f.geometry);
-  return {
-    type: 'Feature',
-    id: f.id,
-    geometry: c ? { type: 'Point', coordinates: c } : f.geometry,
-    properties: {
-      osm_type: f.properties.osm_type,
-      osm_id: f.properties.osm_id,
-      name: f.properties.name ?? null,
-      name_it: f.properties['name:it'] ?? null,
-      holes: f.properties.holes ? Number(f.properties.holes) : null,
-      par: f.properties.par ? Number(f.properties.par) : null,
-      website: f.properties.website ?? null,
-      phone: f.properties.phone ?? null,
-      email: f.properties.email ?? null,
-      operator: f.properties.operator ?? null,
-      access: f.properties.access ?? null,
-      addr_city: f.properties['addr:city'] ?? null,
-      addr_street: f.properties['addr:street'] ?? null,
-      addr_postcode: f.properties['addr:postcode'] ?? null,
-      bbox: bb,
+  const courseFeatures = features.filter((f) => f.properties.leisure === 'golf_course');
+  const courseSummaries = courseFeatures.map((f) => {
+    const c = centroidOf(f.geometry);
+    const bb = bboxOf(f.geometry);
+    return {
+      type: 'Feature',
+      id: f.id,
+      geometry: c ? { type: 'Point', coordinates: c } : f.geometry,
+      properties: {
+        osm_type: f.properties.osm_type,
+        osm_id: f.properties.osm_id,
+        iso_country: iso,
+        country_name: name,
+        name: f.properties.name ?? null,
+        name_local: f.properties[`name:${iso.toLowerCase()}`] ?? null,
+        holes: f.properties.holes ? Number(f.properties.holes) : null,
+        par: f.properties.par ? Number(f.properties.par) : null,
+        website: f.properties.website ?? null,
+        phone: f.properties.phone ?? null,
+        email: f.properties.email ?? null,
+        operator: f.properties.operator ?? null,
+        access: f.properties.access ?? null,
+        addr_city: f.properties['addr:city'] ?? null,
+        addr_street: f.properties['addr:street'] ?? null,
+        addr_postcode: f.properties['addr:postcode'] ?? null,
+        bbox: bb,
+      },
+    };
+  });
+
+  // Tag every feature with its iso for downstream filtering on the map.
+  for (const f of features) {
+    f.properties.iso_country = iso;
+  }
+
+  const featuresFC = {
+    type: 'FeatureCollection',
+    metadata: {
+      source: 'OpenStreetMap contributors via Overpass API',
+      license: 'ODbL',
+      country: iso,
+      fetched_at: new Date().toISOString(),
+      feature_count: features.length,
     },
+    features,
   };
-});
 
-const featuresCollection = {
-  type: 'FeatureCollection',
-  metadata: {
-    source: 'OpenStreetMap contributors via Overpass API',
-    license: 'ODbL',
-    country: COUNTRY_ISO,
-    fetched_at: new Date().toISOString(),
-    feature_count: features.length,
-  },
-  features,
+  await mkdir(FEATURES_DIR, { recursive: true });
+  await writeFile(`${FEATURES_DIR}/${iso}.geojson`, JSON.stringify(featuresFC));
+
+  const dt = ((Date.now() - t0) / 1000).toFixed(1);
+  console.log(` ${features.length} features, ${courseSummaries.length} courses (${dt}s)`);
+
+  return { iso, name, courseSummaries, featureCount: features.length };
+}
+
+// --- main ---
+
+const countriesData = JSON.parse(await readFile(COUNTRIES_FILE, 'utf8'));
+let countries = countriesData.countries ?? [];
+if (COUNTRIES_OVERRIDE) {
+  const allowed = new Set(COUNTRIES_OVERRIDE.split(',').map((s) => s.trim().toUpperCase()));
+  countries = countries.filter((c) => allowed.has(c.iso));
+}
+
+console.log(`Fetching golf data for ${countries.length} countries...`);
+console.log('');
+
+const allCourses = [];
+const manifest = {
+  fetched_at: new Date().toISOString(),
+  source: 'OpenStreetMap contributors via Overpass API',
+  license: 'ODbL',
+  countries: [],
 };
 
-const coursesCollection = {
+const failures = [];
+
+for (let i = 0; i < countries.length; i++) {
+  const c = countries[i];
+  try {
+    const result = await fetchCountry(c.iso, c.name);
+    allCourses.push(...result.courseSummaries);
+    manifest.countries.push({
+      iso: result.iso,
+      name: result.name,
+      course_count: result.courseSummaries.length,
+      feature_count: result.featureCount,
+      features_url: `data/features/${result.iso}.geojson`,
+    });
+  } catch (err) {
+    console.error(`  ${c.iso} FAILED: ${err.message}`);
+    failures.push({ iso: c.iso, name: c.name, error: err.message });
+  }
+  if (i < countries.length - 1) await sleep(SLEEP_MS);
+}
+
+const courseSummaryFC = {
   type: 'FeatureCollection',
   metadata: {
     source: 'OpenStreetMap contributors via Overpass API',
     license: 'ODbL',
-    country: COUNTRY_ISO,
     fetched_at: new Date().toISOString(),
-    feature_count: courses.length,
+    feature_count: allCourses.length,
   },
-  features: courses,
+  features: allCourses,
 };
 
 await mkdir(OUT_DIR, { recursive: true });
-await writeFile(`${OUT_DIR}/golf-features-it.geojson`, JSON.stringify(featuresCollection));
-await writeFile(`${OUT_DIR}/golf-courses-it.geojson`, JSON.stringify(coursesCollection));
-console.log(`Wrote ${features.length} features + ${courses.length} courses to ${OUT_DIR}`);
+await writeFile(`${OUT_DIR}/golf-courses-europe.geojson`, JSON.stringify(courseSummaryFC));
+await writeFile(`${OUT_DIR}/manifest.json`, JSON.stringify(manifest, null, 2));
+
+// Remove the legacy single-country files if they exist.
+for (const legacy of ['golf-courses-it.geojson', 'golf-features-it.geojson']) {
+  try {
+    await rm(`${OUT_DIR}/${legacy}`, { force: true });
+  } catch {}
+}
+
+console.log('');
+console.log(`Total: ${allCourses.length} courses across ${manifest.countries.length} countries`);
+if (failures.length) {
+  console.log(`Failures: ${failures.length}`);
+  for (const f of failures) console.log(`  ${f.iso}: ${f.error}`);
+}

@@ -1,18 +1,38 @@
 @let courses = courseService.courses();
 @let selectedId = courseService.selectedId();
 @let total = courseService.collection()?.features?.length ?? 0;
+@let loadingCountry = courseService.loadingCountry();
+@let countries = availableCountries();
 
 <header class="list-header">
-  <h2>Campi da golf</h2>
-  <p class="meta">{{ courses.length }} di {{ total }}</p>
+  <h2>Golf courses</h2>
+  <p class="meta">
+    {{ courses.length | number }} of {{ total | number }}
+    @if (loadingCountry) {
+      <span class="loading">· loading {{ loadingCountry }}…</span>
+    }
+  </p>
   <input
     type="search"
     class="search"
-    placeholder="Cerca per nome, città, gestore…"
+    placeholder="Search by name, city, country…"
     [ngModel]="courseService.query()"
     (ngModelChange)="onQueryInput($event)"
-    aria-label="Cerca campi"
+    aria-label="Search courses"
   />
+  @if (countries.length > 0) {
+    <select
+      class="country-select"
+      [ngModel]="courseService.countryFilter() ?? ''"
+      (ngModelChange)="onCountryChange($event)"
+      aria-label="Filter by country"
+    >
+      <option value="">All countries ({{ countries.length }})</option>
+      @for (c of countries; track c.iso) {
+        <option [value]="c.iso">{{ c.name }} ({{ c.course_count | number }})</option>
+      }
+    </select>
+  }
 </header>
 
 <ul class="course-list" role="listbox">
@@ -26,17 +46,18 @@
       (keydown.enter)="courseService.select(course.id)"
       tabindex="0"
     >
-      <div class="name">{{ course.properties.name || 'Senza nome' }}</div>
+      <div class="name">{{ course.properties.name || 'Unnamed course' }}</div>
       <div class="sub">
+        <span class="country">{{ course.properties.country_name }}</span>
         @if (course.properties.addr_city) {
-          <span class="city">{{ course.properties.addr_city }}</span>
+          <span class="city">· {{ course.properties.addr_city }}</span>
         }
         @if (course.properties.holes) {
-          <span class="holes">{{ course.properties.holes }} buche</span>
+          <span class="holes">· {{ course.properties.holes }} holes</span>
         }
       </div>
     </li>
   } @empty {
-    <li class="empty">Nessun campo trovato.</li>
+    <li class="empty">No courses found.</li>
   }
 </ul>

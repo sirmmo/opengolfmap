@@ -1,8 +1,10 @@
 export interface CourseProperties {
   osm_type: 'node' | 'way' | 'relation';
   osm_id: number;
+  iso_country: string;
+  country_name: string;
   name: string | null;
-  name_it: string | null;
+  name_local: string | null;
   holes: number | null;
   par: number | null;
   website: string | null;
@@ -31,7 +33,6 @@ export interface CourseCollection {
   metadata?: {
     source: string;
     license: string;
-    country: string;
     fetched_at: string;
     feature_count: number;
   };
@@ -41,6 +42,7 @@ export interface CourseCollection {
 export interface GolfFeatureProperties {
   osm_type: 'node' | 'way' | 'relation';
   osm_id: number;
+  iso_country: string;
   name?: string;
   golf?: string;
   leisure?: string;
@@ -65,4 +67,19 @@ export interface GolfFeatureCollection {
     feature_count: number;
   };
   features: GolfFeature[];
+}
+
+export interface CountryEntry {
+  iso: string;
+  name: string;
+  course_count: number;
+  feature_count: number;
+  features_url: string;
+}
+
+export interface Manifest {
+  fetched_at: string;
+  source: string;
+  license: string;
+  countries: CountryEntry[];
 }

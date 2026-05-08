@@ -5,6 +5,11 @@ on:
     # Mondays at 04:17 UTC — off-peak for the public Overpass instance.
     - cron: '17 4 * * 1'
   workflow_dispatch:
+    inputs:
+      countries:
+        description: 'Optional CSV of ISO codes to refresh (default: all from data/countries.json)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -12,6 +17,8 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    # Europe-wide fetch sequentially through ~47 countries; allow up to 2h.
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
 
@@ -22,8 +29,15 @@ jobs:
       - name: Fetch from Overpass
         env:
           OUT_DIR: ${{ github.workspace }}/web/public/data
-          COUNTRY_ISO: IT
+          COUNTRIES_FILE: ${{ github.workspace }}/data/countries.json
+          COUNTRIES: ${{ inputs.countries }}
         run: node data/fetch-courses.mjs
+
+      - name: Compact GeoJSON
+        env:
+          IN_DIR: ${{ github.workspace }}/web/public/data/features
+          SUMMARY_FILE: ${{ github.workspace }}/web/public/data/golf-courses-europe.geojson
+        run: node data/compact.mjs
 
       - name: Commit if changed
         run: |

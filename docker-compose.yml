@@ -18,5 +18,14 @@ services:
     volumes:
       - ./data:/work/data
       - ./web/public/data:/work/output
-    command: ["node", "/work/data/fetch-courses.mjs"]
+    command: ["sh", "-c", "node /work/data/fetch-courses.mjs && node /work/data/compact.mjs"]
+    profiles: ["tools"]
+
+  compact-data:
+    image: node:20-bookworm-slim
+    working_dir: /work
+    volumes:
+      - ./data:/work/data
+      - ./web/public/data:/work/output
+    command: ["node", "/work/data/compact.mjs"]
     profiles: ["tools"]

@@ -2,6 +2,7 @@ node_modules/
 web/node_modules/
 web/.angular/
 web/dist/
+.claude/
 *.log
 .DS_Store
 .env

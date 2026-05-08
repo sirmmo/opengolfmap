@@ -2,36 +2,42 @@
 @if (course) {
   <article class="card">
     <header>
-      <h3>{{ course.properties.name || 'Senza nome' }}</h3>
-      <button type="button" class="close" (click)="close()" aria-label="Chiudi">×</button>
+      <h3>{{ course.properties.name || 'Unnamed course' }}</h3>
+      <button type="button" class="close" (click)="close()" aria-label="Close">×</button>
     </header>
 
+    <p class="country-line">
+      {{ course.properties.country_name }}
+      @if (course.properties.addr_city) {
+        · {{ course.properties.addr_city }}
+      }
+    </p>
+
     <dl class="props">
-      @if (course.properties.addr_city || course.properties.addr_street) {
+      @if (course.properties.addr_street || course.properties.addr_postcode) {
         <div>
-          <dt>Indirizzo</dt>
+          <dt>Address</dt>
           <dd>
             @if (course.properties.addr_street) { {{ course.properties.addr_street }} }
-            @if (course.properties.addr_postcode) { {{ course.properties.addr_postcode }} }
-            @if (course.properties.addr_city) { {{ course.properties.addr_city }} }
+            @if (course.properties.addr_postcode) { · {{ course.properties.addr_postcode }} }
           </dd>
         </div>
       }
       @if (course.properties.holes) {
-        <div><dt>Buche</dt><dd>{{ course.properties.holes }}</dd></div>
+        <div><dt>Holes</dt><dd>{{ course.properties.holes }}</dd></div>
       }
       @if (course.properties.par) {
         <div><dt>Par</dt><dd>{{ course.properties.par }}</dd></div>
       }
       @if (course.properties.operator) {
-        <div><dt>Gestore</dt><dd>{{ course.properties.operator }}</dd></div>
+        <div><dt>Operator</dt><dd>{{ course.properties.operator }}</dd></div>
       }
       @if (course.properties.access) {
-        <div><dt>Accesso</dt><dd>{{ course.properties.access }}</dd></div>
+        <div><dt>Access</dt><dd>{{ course.properties.access }}</dd></div>
       }
       @if (course.properties.phone) {
         <div>
-          <dt>Telefono</dt>
+          <dt>Phone</dt>
           <dd><a [href]="'tel:' + course.properties.phone">{{ course.properties.phone }}</a></dd>
         </div>
       }
@@ -43,7 +49,7 @@
       }
       @if (course.properties.website) {
         <div>
-          <dt>Sito</dt>
+          <dt>Website</dt>
           <dd>
             <a [href]="course.properties.website" target="_blank" rel="noopener">
               {{ course.properties.website }}
@@ -55,7 +61,7 @@
 
     <footer>
       <a [href]="osmUrl(course)" target="_blank" rel="noopener" class="osm-link">
-        Vedi su OpenStreetMap →
+        View on OpenStreetMap →
       </a>
     </footer>
   </article>

@@ -24,18 +24,29 @@
     color: #6a6a63;
   }
 
-  .search {
+  .search,
+  .country-select {
     width: 100%;
     padding: 0.5rem 0.7rem;
     border: 1px solid #cfcfc8;
     border-radius: 6px;
     font-size: 0.9rem;
+    background: #fff;
 
     &:focus {
       outline: none;
       border-color: #4a8f3e;
       box-shadow: 0 0 0 3px rgba(74, 143, 62, 0.15);
     }
+  }
+
+  .country-select {
+    margin-top: 0.4rem;
+  }
+
+  .loading {
+    color: #4a8f3e;
+    font-style: italic;
   }
 }
 
