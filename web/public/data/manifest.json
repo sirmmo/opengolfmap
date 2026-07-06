@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-06-29T05:56:11.008Z",
+  "fetched_at": "2026-07-06T05:44:22.318Z",
   "source": "OpenStreetMap contributors via Overpass API",
   "license": "ODbL",
   "countries": [
@@ -21,7 +21,7 @@
       "iso": "AT",
       "name": "Austria",
       "course_count": 139,
-      "feature_count": 13785,
+      "feature_count": 13799,
       "features_url": "data/features/AT.geojson"
     },
     {
@@ -42,7 +42,7 @@
       "iso": "BG",
       "name": "Bulgaria",
       "course_count": 30,
-      "feature_count": 911,
+      "feature_count": 1061,
       "features_url": "data/features/BG.geojson"
     },
     {
@@ -70,14 +70,14 @@
       "iso": "CZ",
       "name": "Czechia",
       "course_count": 106,
-      "feature_count": 8398,
+      "feature_count": 8400,
       "features_url": "data/features/CZ.geojson"
     },
     {
       "iso": "DE",
       "name": "Germany",
       "course_count": 777,
-      "feature_count": 95525,
+      "feature_count": 95543,
       "features_url": "data/features/DE.geojson"
     },
     {
@@ -105,21 +105,21 @@
       "iso": "FI",
       "name": "Finland",
       "course_count": 180,
-      "feature_count": 24685,
+      "feature_count": 24684,
       "features_url": "data/features/FI.geojson"
     },
     {
       "iso": "FR",
       "name": "France",
       "course_count": 654,
-      "feature_count": 65103,
+      "feature_count": 65343,
       "features_url": "data/features/FR.geojson"
     },
     {
       "iso": "GB",
       "name": "United Kingdom",
       "course_count": 2727,
-      "feature_count": 261672,
+      "feature_count": 261878,
       "features_url": "data/features/GB.geojson"
     },
     {
@@ -146,8 +146,8 @@
     {
       "iso": "IE",
       "name": "Ireland",
-      "course_count": 456,
-      "feature_count": 31929,
+      "course_count": 463,
+      "feature_count": 31984,
       "features_url": "data/features/IE.geojson"
     },
     {
@@ -161,7 +161,7 @@
       "iso": "IT",
       "name": "Italy",
       "course_count": 259,
-      "feature_count": 11259,
+      "feature_count": 11279,
       "features_url": "data/features/IT.geojson"
     },
     {
@@ -231,7 +231,7 @@
       "iso": "NL",
       "name": "Netherlands",
       "course_count": 204,
-      "feature_count": 28760,
+      "feature_count": 28765,
       "features_url": "data/features/NL.geojson"
     },
     {
@@ -279,8 +279,8 @@
     {
       "iso": "SE",
       "name": "Sweden",
-      "course_count": 317,
-      "feature_count": 31211,
+      "course_count": 319,
+      "feature_count": 31417,
       "features_url": "data/features/SE.geojson"
     },
     {
@@ -307,8 +307,8 @@
     {
       "iso": "TR",
       "name": "Turkey",
-      "course_count": 25,
-      "feature_count": 637,
+      "course_count": 23,
+      "feature_count": 635,
       "features_url": "data/features/TR.geojson"
     },
     {
