@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-31T10:52:40.315Z",
+  "fetched_at": "2026-09-07T09:21:57.779Z",
   "source": "OpenStreetMap contributors via Overpass API",
   "license": "ODbL",
   "countries": [
@@ -21,7 +21,7 @@
       "iso": "AT",
       "name": "Austria",
       "course_count": 140,
-      "feature_count": 13800,
+      "feature_count": 13852,
       "features_url": "data/features/AT.geojson"
     },
     {
@@ -42,7 +42,7 @@
       "iso": "BG",
       "name": "Bulgaria",
       "course_count": 30,
-      "feature_count": 1061,
+      "feature_count": 1052,
       "features_url": "data/features/BG.geojson"
     },
     {
@@ -56,7 +56,7 @@
       "iso": "CH",
       "name": "Switzerland",
       "course_count": 74,
-      "feature_count": 15634,
+      "feature_count": 15635,
       "features_url": "data/features/CH.geojson"
     },
     {
@@ -70,21 +70,21 @@
       "iso": "CZ",
       "name": "Czechia",
       "course_count": 106,
-      "feature_count": 9075,
+      "feature_count": 9112,
       "features_url": "data/features/CZ.geojson"
     },
     {
       "iso": "DE",
       "name": "Germany",
       "course_count": 764,
-      "feature_count": 98856,
+      "feature_count": 98895,
       "features_url": "data/features/DE.geojson"
     },
     {
       "iso": "DK",
       "name": "Denmark",
-      "course_count": 176,
-      "feature_count": 28757,
+      "course_count": 174,
+      "feature_count": 28787,
       "features_url": "data/features/DK.geojson"
     },
     {
@@ -97,22 +97,22 @@
     {
       "iso": "FI",
       "name": "Finland",
-      "course_count": 174,
-      "feature_count": 25451,
+      "course_count": 172,
+      "feature_count": 25453,
       "features_url": "data/features/FI.geojson"
     },
     {
       "iso": "FR",
       "name": "France",
       "course_count": 648,
-      "feature_count": 66935,
+      "feature_count": 67026,
       "features_url": "data/features/FR.geojson"
     },
     {
       "iso": "GB",
       "name": "United Kingdom",
       "course_count": 2732,
-      "feature_count": 269344,
+      "feature_count": 269639,
       "features_url": "data/features/GB.geojson"
     },
     {
@@ -140,14 +140,14 @@
       "iso": "IE",
       "name": "Ireland",
       "course_count": 464,
-      "feature_count": 34894,
+      "feature_count": 35042,
       "features_url": "data/features/IE.geojson"
     },
     {
       "iso": "IS",
       "name": "Iceland",
       "course_count": 53,
-      "feature_count": 3227,
+      "feature_count": 3233,
       "features_url": "data/features/IS.geojson"
     },
     {
@@ -175,7 +175,7 @@
       "iso": "LU",
       "name": "Luxembourg",
       "course_count": 3,
-      "feature_count": 718,
+      "feature_count": 725,
       "features_url": "data/features/LU.geojson"
     },
     {
@@ -184,6 +184,13 @@
       "course_count": 11,
       "feature_count": 544,
       "features_url": "data/features/LV.geojson"
+    },
+    {
+      "iso": "MC",
+      "name": "Monaco",
+      "course_count": 0,
+      "feature_count": 0,
+      "features_url": "data/features/MC.geojson"
     },
     {
       "iso": "MD",
@@ -217,14 +224,14 @@
       "iso": "NL",
       "name": "Netherlands",
       "course_count": 204,
-      "feature_count": 29414,
+      "feature_count": 29455,
       "features_url": "data/features/NL.geojson"
     },
     {
       "iso": "NO",
       "name": "Norway",
       "course_count": 98,
-      "feature_count": 12236,
+      "feature_count": 12239,
       "features_url": "data/features/NO.geojson"
     },
     {
@@ -266,15 +273,15 @@
       "iso": "SE",
       "name": "Sweden",
       "course_count": 320,
-      "feature_count": 32821,
+      "feature_count": 32847,
       "features_url": "data/features/SE.geojson"
     },
     {
-      "iso": "SI",
-      "name": "Slovenia",
-      "course_count": 12,
-      "feature_count": 759,
-      "features_url": "data/features/SI.geojson"
+      "iso": "SK",
+      "name": "Slovakia",
+      "course_count": 21,
+      "feature_count": 3199,
+      "features_url": "data/features/SK.geojson"
     },
     {
       "iso": "SM",
