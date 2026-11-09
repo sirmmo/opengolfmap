@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-02T12:26:02.855Z",
+  "fetched_at": "2026-11-09T12:54:04.790Z",
   "source": "OpenStreetMap contributors via Overpass API",
   "license": "ODbL",
   "countries": [
@@ -11,67 +11,60 @@
       "features_url": "data/features/AL.geojson"
     },
     {
-      "iso": "BE",
-      "name": "Belgium",
-      "course_count": 98,
-      "feature_count": 10634,
-      "features_url": "data/features/BE.geojson"
-    },
-    {
-      "iso": "CY",
-      "name": "Cyprus",
-      "course_count": 4,
-      "feature_count": 1520,
-      "features_url": "data/features/CY.geojson"
-    },
-    {
-      "iso": "ES",
-      "name": "Spain",
-      "course_count": 439,
-      "feature_count": 41353,
-      "features_url": "data/features/ES.geojson"
-    },
-    {
-      "iso": "FR",
-      "name": "France",
-      "course_count": 646,
-      "feature_count": 68338,
-      "features_url": "data/features/FR.geojson"
-    },
-    {
-      "iso": "GB",
-      "name": "United Kingdom",
-      "course_count": 2722,
-      "feature_count": 276243,
-      "features_url": "data/features/GB.geojson"
-    },
-    {
-      "iso": "HR",
-      "name": "Croatia",
-      "course_count": 8,
-      "feature_count": 821,
-      "features_url": "data/features/HR.geojson"
-    },
-    {
-      "iso": "HU",
-      "name": "Hungary",
-      "course_count": 10,
-      "feature_count": 922,
-      "features_url": "data/features/HU.geojson"
-    },
-    {
-      "iso": "LU",
-      "name": "Luxembourg",
+      "iso": "BA",
+      "name": "Bosnia and Herzegovina",
       "course_count": 3,
-      "feature_count": 725,
-      "features_url": "data/features/LU.geojson"
+      "feature_count": 4,
+      "features_url": "data/features/BA.geojson"
     },
     {
-      "iso": "MK",
-      "name": "North Macedonia",
+      "iso": "BG",
+      "name": "Bulgaria",
+      "course_count": 29,
+      "feature_count": 1065,
+      "features_url": "data/features/BG.geojson"
+    },
+    {
+      "iso": "CH",
+      "name": "Switzerland",
+      "course_count": 75,
+      "feature_count": 15898,
+      "features_url": "data/features/CH.geojson"
+    },
+    {
+      "iso": "LT",
+      "name": "Lithuania",
+      "course_count": 4,
+      "feature_count": 173,
+      "features_url": "data/features/LT.geojson"
+    },
+    {
+      "iso": "LV",
+      "name": "Latvia",
+      "course_count": 11,
+      "feature_count": 638,
+      "features_url": "data/features/LV.geojson"
+    },
+    {
+      "iso": "MC",
+      "name": "Monaco",
       "course_count": 0,
-      "feature_count": 3,
-      "features_url": "data/features/MK.geojson"
+      "feature_count": 0,
+      "features_url": "data/features/MC.geojson"
+    },
+    {
+      "iso": "MD",
+      "name": "Moldova",
+      "course_count": 2,
+      "feature_count": 9,
+      "features_url": "data/features/MD.geojson"
+    },
+    {
+      "iso": "ME",
+      "name": "Montenegro",
+      "course_count": 2,
+      "feature_count": 183,
+      "features_url": "data/features/ME.geojson"
     },
     {
       "iso": "MT",
@@ -81,32 +74,11 @@
       "features_url": "data/features/MT.geojson"
     },
     {
-      "iso": "NL",
-      "name": "Netherlands",
-      "course_count": 205,
-      "feature_count": 30217,
-      "features_url": "data/features/NL.geojson"
-    },
-    {
-      "iso": "NO",
-      "name": "Norway",
-      "course_count": 97,
-      "feature_count": 12259,
-      "features_url": "data/features/NO.geojson"
-    },
-    {
       "iso": "RO",
       "name": "Romania",
       "course_count": 9,
       "feature_count": 165,
       "features_url": "data/features/RO.geojson"
-    },
-    {
-      "iso": "SI",
-      "name": "Slovenia",
-      "course_count": 12,
-      "feature_count": 779,
-      "features_url": "data/features/SI.geojson"
     },
     {
       "iso": "SM",
@@ -119,15 +91,8 @@
       "iso": "TR",
       "name": "Turkey",
       "course_count": 24,
-      "feature_count": 705,
+      "feature_count": 706,
       "features_url": "data/features/TR.geojson"
-    },
-    {
-      "iso": "VA",
-      "name": "Vatican",
-      "course_count": 0,
-      "feature_count": 0,
-      "features_url": "data/features/VA.geojson"
     },
     {
       "iso": "XK",
